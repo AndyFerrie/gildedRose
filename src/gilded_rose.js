@@ -26,10 +26,12 @@ class Shop {
             return item.name == "Conjured"
         }
 
+        // Returns if Sulfuras as its values never change
         if (isSulfuras(item)) {
             return
         }
 
+        // Sets quality to 0 if it goes below 0 as it cannot be negative
         if (item.quality < 0) {
             item.quality = 0
         }
