@@ -17,6 +17,11 @@ describe("Gilded Rose", function() {
             const items = gildedRose.updateQualityForMultipleDays(20)
             expect(items[0].quality).toBe(0);
         });
+        test("When an item is added with negative quality, then `Quality` is set to zero", function() {
+            const gildedRose = new Shop([new Item("non-legendary item", 1, -1)]);
+            const items = gildedRose.updateQualityForMultipleDays(20)
+            expect(items[0].quality).toBe(0);
+        });
     });
     describe("Given 'Aged Brie'", function() {
         test("When the sell by date has not passed, then `Quality` increases by 1", function() {
