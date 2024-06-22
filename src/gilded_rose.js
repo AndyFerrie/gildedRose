@@ -39,7 +39,13 @@ class Shop {
             if (isBrie(item)) {
                 item.quality = item.quality + 1
             } else if (isTAFKAL80ETC(item)) {   
+                if (item.sellIn < 6) {
+                    item.quality = item.quality + 3
+                } else if (item.sellIn < 11) {
+                    item.quality = item.quality + 2
+                } else {
                 item.quality = item.quality + 1
+                }
             } else if (isConjured(item)) {
                 item.quality = item.quality - 2
             } else {
