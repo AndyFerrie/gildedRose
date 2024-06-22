@@ -59,6 +59,12 @@ class Shop {
 
     return this.items;
   }
+  updateQualityForMultipleDays(days) {
+    for (let i = 0; i < days; i++) {
+      this.updateQuality();
+    }
+    return this.items;
+  }
 }
 
 module.exports = {
