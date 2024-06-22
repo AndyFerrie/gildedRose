@@ -75,10 +75,20 @@ describe("Gilded Rose", function() {
             const items = gildedRose.updateQualityForMultipleDays(1)
             expect(items[0].quality).toBe(4);
         });
+        test("When 'Quality' reaches 0 before the sell by date, then `Quality` cannot decrease further", function() {
+            const gildedRose = new Shop([new Item("Conjured", 3, 1)]);
+            const items = gildedRose.updateQualityForMultipleDays(20)
+            expect(items[0].quality).toBe(0);
+        });
         test("When the sell by date has passed, then `Quality` decreases by 4", function() {
             const gildedRose = new Shop([new Item("Conjured", 0, 6)]);
             const items = gildedRose.updateQualityForMultipleDays(1)
             expect(items[0].quality).toBe(2);
+        });
+        test("When 'Quality' reaches 0 after the sell by date, then `Quality` cannot decrease further", function() {
+            const gildedRose = new Shop([new Item("Conjured", 0, 1)]);
+            const items = gildedRose.updateQualityForMultipleDays(20)
+            expect(items[0].quality).toBe(0);
         });
     });
 

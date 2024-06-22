@@ -16,7 +16,11 @@ class Shop {
         if (this.items[i].quality > 0) {
           if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
             if (this.items[i].name == 'Conjured') { 
-                this.items[i].quality = this.items[i].quality - 2;
+                if (this.items[i].quality - 2 > 0) {
+                    this.items[i].quality = this.items[i].quality - 2;
+                } else {
+                    this.items[i].quality = 0;
+                }
             } else {
                 this.items[i].quality = this.items[i].quality - 1;
             }
