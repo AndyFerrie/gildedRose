@@ -35,4 +35,38 @@ describe("Gilded Rose", function() {
             expect(items[0].quality).toBe(50);
         });
     });
+    describe("Given 'Sulfuras, Hand of Ragnaros'", function() {
+        test("When multiple days pass, then `Quality` does not change", function() {
+            const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 1, 80)]);
+            const items = gildedRose.updateQualityForMultipleDays(20)
+            expect(items[0].quality).toBe(80);
+        });
+        test("When multiple days pass, then `SellIn` does not change", function() {
+            const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 1, 80)]);
+            const items = gildedRose.updateQualityForMultipleDays(20)
+            expect(items[0].sellIn).toBe(1);
+        });
+    });
+    describe("Given 'Backstage passes to a TAFKAL80ETC concert'", function() {
+        test("When the sell by date is in over 10 days, then `Quality` increases by 1", function() {
+            const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 15, 4)]);
+            const items = gildedRose.updateQualityForMultipleDays(1)
+            expect(items[0].quality).toBe(5);
+        });
+        test("When the sell by date is in 6-10 days, then `Quality` increases by 2", function() {
+            const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 10, 4)]);
+            const items = gildedRose.updateQualityForMultipleDays(1)
+            expect(items[0].quality).toBe(6);
+        });
+        test("When the sell by date is in 5 days or less, then `Quality` increases by 3", function() {
+            const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 5, 4)]);
+            const items = gildedRose.updateQualityForMultipleDays(1)
+            expect(items[0].quality).toBe(7);
+        });
+        test("When the sell by date has passed, then `Quality` drops to 0", function() {
+            const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 0, 4)]);
+            const items = gildedRose.updateQualityForMultipleDays(1)
+            expect(items[0].quality).toBe(0);
+        });
+    });
 })
