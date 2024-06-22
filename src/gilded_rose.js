@@ -12,6 +12,8 @@ class Shop {
   }
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
+        const minimumQuality = 0
+        const maximumQuality = 50
         const item = this.items[i];
         function isSulfuras(item) {
             return item.name == "Sulfuras, Hand of Ragnaros"
@@ -30,6 +32,24 @@ class Shop {
             return item.sellIn <= 0
         }
 
+        function increaseQuality(item, amount) {
+        item.quality = item.quality + amount;
+        }
+
+        function decreaseQuality(item, amount) {
+        item.quality = item.quality - amount;
+        }
+
+        function updateTAFKAL80ETCQuality(item) {
+            if (item.sellIn < 6) {
+                increaseQuality(item, 3);
+            } else if (item.sellIn < 11) {
+                increaseQuality(item, 2);
+            } else {
+                increaseQuality(item, 1);
+            }
+        }
+
         // Returns if Sulfuras as its values never change
         if (isSulfuras(item)) {
             return
@@ -37,43 +57,37 @@ class Shop {
 
         if (!sellByDatePassed(item)) {
             if (isBrie(item)) {
-                item.quality = item.quality + 1
+                increaseQuality(item, 1)
             } else if (isTAFKAL80ETC(item)) {   
-                if (item.sellIn < 6) {
-                    item.quality = item.quality + 3
-                } else if (item.sellIn < 11) {
-                    item.quality = item.quality + 2
-                } else {
-                item.quality = item.quality + 1
-                }
+                updateTAFKAL80ETCQuality(item)
             } else if (isConjured(item)) {
-                item.quality = item.quality - 2
+                decreaseQuality(item, 2)
             } else {
-                item.quality = item.quality - 1
+                decreaseQuality(item, 1)
             }
         }
 
         if (sellByDatePassed(item)) {
             if (isBrie(item)) {
-                item.quality = item.quality + 2
+                increaseQuality(item, 2)
             } else if (isTAFKAL80ETC(item)) {   
                 item.quality = 0
             } else if (isConjured(item)) {
-                item.quality = item.quality - 4
+                decreaseQuality(item, 4)
             } else {
-                item.quality = item.quality - 2
+                decreaseQuality(item, 2)
             }
         }
         
-         // Sets quality to 0 if it goes below 0 as it cannot be negative
-        if (item.quality < 0) {
-            item.quality = 0
+        if (item.quality < minimumQuality) {
+            item.quality = minimumQuality
         }
-        // Sets quality to 50 if it goes above 50 as it cannot be greater than 50
-        if (item.quality > 50) {
-            item.quality = 50
+        
+        if (item.quality > maximumQuality) {
+            item.quality = maximumQuality
         }
 
+        // Decreases sell in days by 1
         item.sellIn = item.sellIn - 1
     }
 
