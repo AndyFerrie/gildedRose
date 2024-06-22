@@ -26,66 +26,49 @@ class Shop {
             return item.name == "Conjured"
         }
 
+        function sellByDatePassed(item) {
+            return item.sellIn <= 0
+        }
+
         // Returns if Sulfuras as its values never change
         if (isSulfuras(item)) {
             return
         }
 
-        // Sets quality to 0 if it goes below 0 as it cannot be negative
+        if (!sellByDatePassed(item)) {
+            if (isBrie(item)) {
+                item.quality = item.quality + 1
+            } else if (isTAFKAL80ETC(item)) {   
+                item.quality = item.quality + 1
+            } else if (isConjured(item)) {
+                item.quality = item.quality - 2
+            } else {
+                item.quality = item.quality - 1
+            }
+        }
+
+        if (sellByDatePassed(item)) {
+            if (isBrie(item)) {
+                item.quality = item.quality + 2
+            } else if (isTAFKAL80ETC(item)) {   
+                item.quality = 0
+            } else if (isConjured(item)) {
+                item.quality = item.quality - 4
+            } else {
+                item.quality = item.quality - 2
+            }
+        }
+        
+         // Sets quality to 0 if it goes below 0 as it cannot be negative
         if (item.quality < 0) {
             item.quality = 0
         }
+        // Sets quality to 50 if it goes above 50 as it cannot be greater than 50
+        if (item.quality > 50) {
+            item.quality = 50
+        }
 
-      if (!isBrie(item) && !isTAFKAL80ETC(item)) {
-        if (item.quality > 0) {
-            if (isConjured(item)) {
-                if (item.quality - 2 > 0) {
-                    item.quality = item.quality - 2;
-                } else {
-                    item.quality = 0;
-                }
-            } else {
-                item.quality = item.quality - 1;
-            }
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-          if (isTAFKAL80ETC(item)) {
-            if (item.sellIn < 11) {
-              if (item.quality < 50) {
-                item.quality = item.quality + 1;
-              }
-            }
-            if (item.sellIn < 6) {
-              if (item.quality < 50) {
-                item.quality = item.quality + 1;
-              }
-            }
-          }
-        }
-      }
-        
-        item.sellIn = item.sellIn - 1;
-      if (item.sellIn < 0) {
-        if (!isBrie(item)) {
-          if (!isTAFKAL80ETC(item)) {
-            if (item.quality > 0) {
-                if (isConjured(item)) { 
-                    item.quality = item.quality - 2;
-                } else {
-                    item.quality = item.quality - 1;
-                }
-            }
-          } else {
-            item.quality = item.quality - item.quality;
-          }
-        } else {
-          if (item.quality < 50) {
-            item.quality = item.quality + 1;
-          }
-        }
-      }
+        item.sellIn = item.sellIn - 1
     }
 
     return this.items;
