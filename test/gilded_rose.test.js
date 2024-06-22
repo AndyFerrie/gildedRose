@@ -69,4 +69,17 @@ describe("Gilded Rose", function() {
             expect(items[0].quality).toBe(0);
         });
     });
+    describe("Given 'Conjured' item", function() {
+        test("When the sell by date has not passed, then `Quality` decreases by 2", function() {
+            const gildedRose = new Shop([new Item("Conjured", 3, 6)]);
+            const items = gildedRose.updateQualityForMultipleDays(1)
+            expect(items[0].quality).toBe(4);
+        });
+        test("When the sell by date has passed, then `Quality` decreases by 4", function() {
+            const gildedRose = new Shop([new Item("Conjured", 0, 6)]);
+            const items = gildedRose.updateQualityForMultipleDays(1)
+            expect(items[0].quality).toBe(2);
+        });
+    });
+
 })
